@@ -1,9 +1,9 @@
-package com.major.DigitalDiary.Bean;
+package com.major.DigitalDiary.rest.basic.auth;
 
-public class ChildEntry {
+public class AuthenticationBean {
     private String message;
 
-    public ChildEntry(String message){
+    public AuthenticationBean(String message) {
         this.message = message;
     }
 
@@ -17,7 +17,7 @@ public class ChildEntry {
 
     @Override
     public String toString() {
-        return "ChildEntry{" +
+        return "AuthenticationBean{" +
                 "message='" + message + '\'' +
                 '}';
     }

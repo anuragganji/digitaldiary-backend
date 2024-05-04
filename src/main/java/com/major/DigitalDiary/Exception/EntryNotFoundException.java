@@ -1,7 +1,10 @@
 package com.major.DigitalDiary.Exception;
 
-public class EntryNotFoundException extends RuntimeException{
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
+public class EntryNotFoundException extends ResponseStatusException {
     public EntryNotFoundException(String message){
-        super(message);
+        super(HttpStatus.NOT_FOUND, message);
     }
 }

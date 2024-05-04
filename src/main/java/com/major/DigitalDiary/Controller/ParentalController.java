@@ -1,6 +1,6 @@
 package com.major.DigitalDiary.Controller;
 
-import com.major.DigitalDiary.Bean.ChildEntry;
+import com.major.DigitalDiary.DTO.ChildEntry;
 import com.major.DigitalDiary.Model.User;
 import com.major.DigitalDiary.Model.UserRelation;
 import com.major.DigitalDiary.Service.UserRelationService;
