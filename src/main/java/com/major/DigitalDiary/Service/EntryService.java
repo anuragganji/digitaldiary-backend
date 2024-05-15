@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
-import static com.major.DigitalDiary.Query.EntryQuery.*;
+import static com.major.DigitalDiary.Query.EntryQuery.SELECT_YESTERDAY_ENTRY_QUERY;
 
 
 @Service
@@ -39,12 +39,16 @@ public class EntryService {
         this.entryRepository = entryRepository;
     }
 
-    public Entry setEntry(Entry entry){
-        Entry oldEntry = entryRepository.findEntryByEntryDate(entry.getEntryDate());
-        if(oldEntry !=null){
-            oldEntry.setContent(oldEntry.getContent()+"     "+entry.getContent());
+    public Entry createEntry(Entry entry, String username) {
+        User user = userService.findUserByUsername(username);
+        Entry oldEntry = entryRepository.findEntryByUserIdAndEntryDate(user, entry.getEntryDate());
+
+        if (oldEntry != null) {
+            oldEntry.setUserId(user);
+            oldEntry.setContent(oldEntry.getContent() + "     " + entry.getContent());
             return entryRepository.save(oldEntry);
-        }else{
+        } else {
+            entry.setUserId(user);
             return entryRepository.save(entry);
         }
     }
@@ -54,10 +58,10 @@ public class EntryService {
         User parentUser = userService.findUserByUserId(parentUserId);
         UserRelation userRelation = userRelationService.findChildUser(parentUser);
 
-            if (userRelation==null){
-                throw new NotAParentException("You do not have parent access to any user!!");
-            }
-            return userRelation.getUserId().getUserId();
+        if (userRelation == null) {
+            throw new NotAParentException("You do not have parent access to any user!!");
+        }
+        return userRelation.getUserId().getUserId();
 
     }
 
@@ -101,26 +105,25 @@ public class EntryService {
         return findYesterdayEntryByUserId(childUserId);
     }
 
-    public List<Entry> findEntriesByUserId(Long userId){
+    public List<Entry> findEntriesByUserId(Long userId) {
         User user = userService.findUserByUserId(userId);
         System.out.println(user);
         return entryRepository.findEntryByUserId(user);
     }
 
-    public Entry findEntryByUsernameAndDate(String username, LocalDate date){
+    public Entry findEntryByUsernameAndDate(String username, LocalDate date) {
         User user = userService.findUserByUsername(username);
-        if(user == null){
-            throw new UserNotFoundException("No user found with username "+username);
+        if (user == null) {
+            throw new UserNotFoundException("No user found with username " + username);
         }
         System.out.println(user);
         return entryRepository.findEntryByUserIdAndEntryDate(user, date);
     }
 
-    public List<Entry> findAllEntriesByUsername(String username){
+    public List<Entry> findAllEntriesByUsername(String username) {
         User user = userService.findUserByUsername(username);
         return entryRepository.findEntryByUserId(user);
     }
-
 
 
     private SqlParameterSource getSqlParameterSource(Long userId) {

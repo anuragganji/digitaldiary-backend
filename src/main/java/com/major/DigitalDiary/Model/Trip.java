@@ -12,9 +12,6 @@ public class Trip {
 
     private String tripName;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User userId;
 
     public Long getTripId() {
         return tripId;
@@ -32,20 +29,12 @@ public class Trip {
         this.tripName = tripName;
     }
 
-    public User getUserId() {
-        return userId;
-    }
-
-    public void setUserId(User userId) {
-        this.userId = userId;
-    }
 
     @Override
     public String toString() {
         return "Trip{" +
                 "tripId=" + tripId +
                 ", tripName='" + tripName + '\'' +
-                ", userId=" + userId +
                 '}';
     }
 }

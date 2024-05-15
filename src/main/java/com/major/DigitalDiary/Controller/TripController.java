@@ -1,7 +1,8 @@
 package com.major.DigitalDiary.Controller;
 
 
-import com.major.DigitalDiary.Model.Trip;
+import com.major.DigitalDiary.DTO.TripUsers;
+import com.major.DigitalDiary.Model.UserTripRelation;
 import com.major.DigitalDiary.Service.TripService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +22,18 @@ public class TripController {
     }
 
     @GetMapping("/all/{username}")
-    public ResponseEntity<List<Trip>> getAllUsers(@PathVariable("username") String username) {
-        List<Trip> trips = tripService.findAllTrips(username);
+    public ResponseEntity<List<UserTripRelation>> getAllUsers(@PathVariable("username") String username) {
+        List<UserTripRelation> trips = tripService.findAllTrips(username);
         return new ResponseEntity<>(trips, HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/create")
+    public ResponseEntity<Void> createPost(@RequestBody TripUsers tripUsers) {
+
+        System.out.println("Trip Users: " + tripUsers);
+
+        //throw new RuntimeException("Contact Support!!");
+        tripService.createTrip(tripUsers);
+        return ResponseEntity.ok().build();
     }
 }

@@ -2,7 +2,6 @@ package com.major.DigitalDiary.Controller;
 
 import com.major.DigitalDiary.Exception.EntryNotFoundException;
 import com.major.DigitalDiary.Model.Entry;
-import com.major.DigitalDiary.Model.User;
 import com.major.DigitalDiary.Service.EntryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -70,12 +69,12 @@ public class EntryController {
         return new ResponseEntity<>(yesterdayEntry, HttpStatus.OK);
     }
     @PostMapping(path = "/create/{username}")
-    public ResponseEntity<Void> setParent(@PathVariable String username, @RequestBody Entry entry){
+    public ResponseEntity<Void> createEntry(@PathVariable String username, @RequestBody Entry entry) {
         System.out.println("Entry Details");
         System.out.println(entry);
 
         //throw new RuntimeException("Contact Support!!");
-        entryService.setEntry(entry);
+        entryService.createEntry(entry, username);
         return ResponseEntity.ok().build();
     }
 }
